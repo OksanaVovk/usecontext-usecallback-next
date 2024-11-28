@@ -11,14 +11,7 @@ const options = [
 ];
 
 const ContactItem = memo(
-  ({
-    index,
-    selectedOption,
-    details,
-    setDetails,
-    setOptions,
-    onDeleteBtnClick,
-  }) => {
+  ({ index, selectedOption, details, changeContact, onDeleteBtnClick }) => {
     // NOTE: This component should take additional props
     // NOTE: and use them to manage state
 
@@ -31,7 +24,7 @@ const ContactItem = memo(
             className={stylescenter.selecterOptions}
             name="optionSelected"
             value={selectedOption}
-            onChange={(e) => setOptions(index, e)}
+            onChange={(e) => changeContact(index, e, "options")}
           >
             {options.map((el) => (
               <option key={el.value} value={el.value}>
@@ -48,7 +41,7 @@ const ContactItem = memo(
             rows="2"
             className={stylescenter.detailsChannelInput}
             value={details}
-            onChange={(e) => setDetails(index, e)}
+            onChange={(e) => changeContact(index, e, "details")}
             placeholder="введіть телефон або @username"
           />
           <div className={stylescenter.removeButtons}>

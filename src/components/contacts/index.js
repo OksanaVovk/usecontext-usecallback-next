@@ -1,5 +1,5 @@
 import React from "react";
-import { useContext, useCallback, useState } from "react";
+import { useContext, useCallback } from "react";
 import { ContactContext } from "../App";
 import stylesCenter from "./index.module.css";
 import ContactItem from "./ContactItem";
@@ -7,41 +7,22 @@ import ContactItem from "./ContactItem";
 const Contacts = () => {
   const { contactArray, setContactArray } = useContext(ContactContext);
 
-  const [options, setOptions] = useState("");
-  const [details, setDetails] = useState("");
-
-  const selectOptions = useCallback(
-    (index, e) => {
-      const updatedArray = contactArray.map((item, i) =>
-        i === index ? { ...item, options: e.target.value } : item
+  const changeContact = useCallback(
+    (index, e, name) => {
+      setContactArray((prevArray) =>
+        prevArray.map((item, i) =>
+          i === index ? { ...item, [name]: e.target.value } : item
+        )
       );
-      setContactArray(updatedArray);
-      setOptions(e.target.value);
     },
-    [setContactArray, contactArray]
-  );
-
-  const changeDetails = useCallback(
-    (index, e) => {
-      const updatedArray = contactArray.map((item, i) =>
-        i === index ? { ...item, details: e.target.value } : item
-      );
-      setContactArray(updatedArray);
-
-      setDetails(e.target.value);
-    },
-    [setContactArray, contactArray]
+    [setContactArray]
   );
 
   const onBtnClick = () => {
-    setContactArray((prevContacts) => [
-      ...prevContacts.slice(0, prevContacts.length - 1),
-      { options: options, details: details },
-
+    setContactArray((prevArray) => [
+      ...prevArray,
       { options: "", details: "" },
     ]);
-    setOptions("");
-    setDetails("");
   };
 
   const onDeleteBtnClick = useCallback(
@@ -65,8 +46,8 @@ const Contacts = () => {
             index={index}
             selectedOption={item.options}
             details={item.details}
-            setDetails={changeDetails}
-            setOptions={selectOptions}
+            // setDetails={changeDetails}
+            changeContact={changeContact}
             onDeleteBtnClick={onDeleteBtnClick}
           />
         ))}
