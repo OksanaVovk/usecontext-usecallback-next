@@ -8,27 +8,26 @@ const Contacts = () => {
   const { contactArray, setContactArray } = useContext(ContactContext);
 
   const changeContact = useCallback(
-    (index, e, name) => {
-      setContactArray((prevArray) =>
-        prevArray.map((item, i) =>
-          i === index ? { ...item, [name]: e.target.value } : item
-        )
+    (id, e, name) => {
+      const updatedArray = contactArray.map((item) =>
+        item.id === id ? { ...item, [name]: e.target.value } : item
       );
+      setContactArray(updatedArray);
     },
-    [setContactArray]
+    [setContactArray, contactArray]
   );
 
   const onBtnClick = () => {
     setContactArray((prevArray) => [
       ...prevArray,
-      { options: "", details: "" },
+      { options: "", details: "", id: Symbol() },
     ]);
   };
 
   const onDeleteBtnClick = useCallback(
-    (deleteIndex) => {
+    (id) => {
       setContactArray((prevArray) =>
-        prevArray.filter((_, index) => index !== deleteIndex)
+        prevArray.filter((item) => item.id !== id)
       );
     },
     [setContactArray]
@@ -44,9 +43,9 @@ const Contacts = () => {
           <ContactItem
             key={index}
             index={index}
+            id={item.id}
             selectedOption={item.options}
             details={item.details}
-            // setDetails={changeDetails}
             changeContact={changeContact}
             onDeleteBtnClick={onDeleteBtnClick}
           />
