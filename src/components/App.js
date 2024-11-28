@@ -1,5 +1,6 @@
 "use client";
 import React from "react";
+import { useState } from "react";
 import "./App.css";
 import Contacts from "./contacts";
 import Logo from "./Logo";
@@ -7,17 +8,27 @@ import Logo from "./Logo";
 export const ContactContext = React.createContext();
 
 function App() {
+  const [contactArray, setContactArray] = useState([
+    {
+      options: "",
+      details: "",
+    },
+  ]);
+
+  const value = { contactArray, setContactArray };
   // NOTE: Use context provider in this component
 
   return (
-    <div className="grid-container">
-      <div>
-        <Contacts />
+    <ContactContext.Provider value={value}>
+      <div className="grid-container">
+        <div>
+          <Contacts />
+        </div>
+        <div>
+          <Logo />
+        </div>
       </div>
-      <div>
-        <Logo />
-      </div>
-    </div>
+    </ContactContext.Provider>
   );
 }
 
